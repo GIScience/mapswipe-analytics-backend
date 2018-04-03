@@ -1,4 +1,4 @@
-# MapSwipe Processing
+# MapSwipe Analytics Backend
 
 The diagram provides an overview of the role of this repo towards other MapSwipe related projects. Processing is the central to offer our MapSwipe related services and consists of three major submodules: import, enrichment and export. All submodules are combined in the [processing_workflow](/processing_workflow/readme.md).
 
