@@ -1,0 +1,10 @@
+{
+  "name": "import_all_looped_pm",
+  "script": "import_workflow.py",
+  "cwd": "/data//MapSwipe_privat/data import",
+  "exec_interpreter": "/home/mapswipe_backend/bin/python",
+  "log_date_format": "YYYY-MM-DD HH:mm Z",
+  "autorestart": true,
+  "restart_delay": "3600",
+  "args": []
+}

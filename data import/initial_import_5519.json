@@ -1,0 +1,9 @@
+{
+  "name": "initial_import_5519",
+  "script": "import_workflow.py",
+  "cwd": "/data//MapSwipe_privat/data import",
+  "exec_interpreter": "/home/mapswipe_backend/bin/python",
+  "log_date_format": "YYYY-MM-DD HH:mm Z",
+  "autorestart": false,
+  "args": ["-i", "-p 5519", "-t 1511126000000"]
+}
