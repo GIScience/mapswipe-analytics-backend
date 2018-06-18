@@ -23,8 +23,8 @@ What do the fields in the output refer to?
 | *maybe_count* | count of all user contributions for which the result is `maybe`/`2` |
 | *badimage_count* | count of all user contributions for which the result is `bad_image`/`3` |
 | *agreement* | agreement calculated as Scott's Pi following Fleiss (1971) |
-| *msi* | proportion of all `yes` contributions on all contributions |
-| *no_si* | proportion of all `no` contributions on all contributions |
+| *msi* | proportion of all `yes` and `maybe` contributions on all contributions (`msi= (yes_count + maybe_count) / completed_count`) |
+| *no_si* | proportion of all `no` contributions on all contributions (`msi= no_count / completed_count`) |
 
 
 ## Authentification Configuration and Requirements
