@@ -88,6 +88,9 @@ def create_aggregation(project_id, contributions_table):
             END) AS badimage_count
           -- don't forget the geometry
           ,c.geo
+          -- add area and perimeter for each task
+          ,round(ST_Area(c.geo::geography)::numeric,3) as area_in_sqm
+          ,round(ST_Perimeter(c.geo::geography)::numeric,3) as perimeter_in_m
         FROM
           {} as c
         GROUP By
