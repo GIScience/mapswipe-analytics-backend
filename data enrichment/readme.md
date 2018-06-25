@@ -25,6 +25,8 @@ What do the fields in the output refer to?
 | *agreement* | agreement calculated as Scott's Pi following Fleiss (1971) |
 | *msi* | proportion of all `yes` and `maybe` contributions on all contributions (`msi= (yes_count + maybe_count) / completed_count`) |
 | *no_si* | proportion of all `no` contributions on all contributions (`msi= no_count / completed_count`) |
+| *area_in_sqm* | area of the task geometry in square meters |
+| *perimeter_in_m* | perimeter of the task geometry in meters |
 
 
 ## Authentification Configuration and Requirements
