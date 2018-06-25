@@ -116,7 +116,8 @@ def abort_pending_tasks(g, layer):
     ]
 
     response = requests.get(url_get, auth=auth)
-    array = json.loads(response.content)
+    str_response = response.content.decode("utf-8")
+    array = json.loads(str_response)
 
     response = []
     for task in array['long-array-array']:
