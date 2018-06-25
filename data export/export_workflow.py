@@ -188,10 +188,10 @@ if __name__ == '__main__':
 
 
         # this runs the script and sends an email if an error happens within the execution
-        #try:
-        run_export(args.projects, args.project_table_name, args.output_path, args.export_all)
-        #except Exception as error:
-        #    error_handling.send_error(error, 'processing_workflow.py')
+        try:
+            run_export(args.projects, args.project_table_name, args.output_path, args.export_all)
+        except Exception as error:
+            error_handling.send_error(error, 'processing_workflow.py')
 
         # check if the script should be looped
         if args.loop:
