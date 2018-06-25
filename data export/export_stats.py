@@ -50,12 +50,16 @@ SELECT count(a.*) AS project_total,
 
     ( SELECT id
            FROM projects
-          GROUP BY id
+           WHERE
+           st_area(extent::geography) IS NOT NULL
+           GROUP BY id
           ORDER BY (sum(st_area(extent))) DESC
          LIMIT 1) AS largest_project,
 
     ( SELECT round(sum(st_area(extent::geography))::numeric / 1000000::numeric, 3) AS round
            FROM projects
+         WHERE
+         st_area(extent::geography) IS NOT NULL
           GROUP BY id
           ORDER BY (sum(st_area(extent))) DESC
          LIMIT 1) AS largest_area,
@@ -73,11 +77,11 @@ SELECT count(a.*) AS project_total,
          LIMIT 1) AS smallest_area,
 
     ( SELECT sum(round(st_area(extent::geography)::numeric / 1000000::numeric, 3)) AS sum
-           FROM projects ) AS total_km_sq_covered
+           FROM projects
+            WHERE progress > 98	) AS total_km_sq_covered
 
 
-   FROM 
-   		projects a;'''
+   FROM projects a;'''
 
     p_con.query(sql_insert, None)
     print('created view: stats_general')
