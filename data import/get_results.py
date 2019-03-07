@@ -20,7 +20,7 @@ from queue import Queue
 
 from psycopg2 import sql
 
-from auth import mysqlDB
+from auth import mapswipe_psqlDB
 from auth import psqlDB
 
 import argparse
@@ -81,7 +81,7 @@ def save_in_csv(data):
         row_results[u'projectId'] = row[2]
         row_results[u'timestamp'] = row[3]
         row_results[u'result'] = row[4]
-        row_results[u'duplicates'] = row[9]
+        row_results[u'duplicates'] = row[5]
         # write row to file
 
         results_writer.writerow(row_results)
@@ -145,17 +145,23 @@ def create_results_psql(results_csv_filename, results_table_name):
 
 def download_results(timestamp, offset, limit):
     # establish mysql connection
-    m_con = mysqlDB()
+    m_con = mapswipe_psqlDB()
     # sql command
     higher_timestamp = '''
         SELECT
-            *
+         task_id
+         ,user_id
+         ,project_id
+         ,timestamp
+         ,info ->> 'result' as result
+         ,duplicates
         FROM
           results
         WHERE
           timestamp > %s
         ORDER BY timestamp ASC
-        LIMIT %s, %s
+        OFFSET %s
+        LIMIT %s
         '''
 
     # query new results, store in tuple
@@ -171,7 +177,7 @@ def download_results(timestamp, offset, limit):
 
 
 def get_changed_projects(timestamp):
-    m_con = mysqlDB()
+    m_con = mapswipe_psqlDB()
     changed_projects = '''
       SELECT
         project_id
@@ -183,7 +189,7 @@ def get_changed_projects(timestamp):
         project_id
     '''
     # query list of projects, the new results refer to
-    project_list_raw = m_con.retr_query(changed_projects, timestamp)
+    project_list_raw = m_con.retr_query(changed_projects, [timestamp])
 
     changed_projects_list = []
     for i in project_list_raw:
@@ -193,8 +199,9 @@ def get_changed_projects(timestamp):
     del m_con
     return changed_projects_list
 
+
 def get_results_count(timestamp):
-    m_con = mysqlDB()
+    m_con = mapswipe_psqlDB()
     sql_insert = '''
       SELECT
         count(*)
@@ -204,8 +211,8 @@ def get_results_count(timestamp):
         timestamp >%s
     '''
     # query list of projects, the new results refer to
-    count = m_con.retr_query(sql_insert, timestamp)[0][0]
-
+    count = m_con.retr_query(sql_insert, [timestamp])[0][0]
+    print(count)
     del m_con
     return count
 
