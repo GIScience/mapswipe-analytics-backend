@@ -158,7 +158,7 @@ class default_psqlDB(object):
         self._db_connection.close()
 
 
-class mysqlDB(object):
+class mapswipe_psqlDB(object):
     _db_connection = None
     _db_cur = None
 
@@ -167,19 +167,23 @@ class mysqlDB(object):
         try:
             with open('../cfg/config.cfg') as json_data_file:
                 data = json.load(json_data_file)
-                dbname = data['mysql']['database']
-                user = data['mysql']['username']
-                password = data['mysql']['password']
-                host = data['mysql']['host']
-                #print('use configuration for mysql as provided by config.json')
+                dbname = data['mapswipe_psql']['database']
+                user = data['mapswipe_psql']['username']
+                password = data['mapswipe_psql']['password']
+                host = data['mapswipe_psql']['host']
+                port = data['mapswipe_psql']['port']
+                #print('use configuration for psql as provided by config.json')
         except:
-            sys.exit('please provide a mysql config')
+            sys.exit('please provide a psql config')
 
-        self._db_connection = pymysql.connect(
-            database=dbname,
+        # adapt this to your psql setting
+        self._db_connection = psycopg2.connect(
+            dbname=dbname,
             user=user,
             password=password,
-            host=host)
+            host=host,
+            # for testing on your local computer, change the port for different purpose, on the server we use port 5432
+            port=port)
 
     def query(self, query, data):
         self._db_cur = self._db_connection.cursor()
@@ -188,13 +192,23 @@ class mysqlDB(object):
         self._db_cur.close()
         return
 
-    def retr_query(self, query, data):
+    def retr_query(self, retr_query, data):
         self._db_cur = self._db_connection.cursor()
-        self._db_cur.execute(query, data)
+        self._db_cur.execute(retr_query, data)
         content = self._db_cur.fetchall()
         self._db_connection.commit()
         self._db_cur.close()
         return content
+
+    def copy_from(self, file, table, sep='\t', null='\\N', size=8192, columns=None):
+        self._db_cur = self._db_connection.cursor()
+        self._db_cur.copy_from(file, table, sep=sep, null='\\N', size=8192, columns=columns)
+        self._db_connection.commit()
+        self._db_cur.close()
+        return
+
+    def close(self):
+        self._db_connection.close()
 
     def __del__(self):
         #self._db_cur.close()
