@@ -1,5 +1,5 @@
 gcloud==0.18.3
-GDAL==2.3.2
+GDAL==2.2.4
 googleapis-common-protos==1.5.2
 httplib2==0.10.3
 jws==0.1.3
